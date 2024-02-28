@@ -27,13 +27,18 @@ def passenger_signup(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-    return Response("User information is invalid", status=status.HTTP_226_IM_USED)
+    return Response("User information is invalid", status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
 def passenger_login(request):
 
     key = request.data["email_address"]
-    user = PassengerInfomation.objects.get(email_address=key)
+    
+    try:
+        user = PassengerInfomation.objects.get(email_address=key)
+    except PassengerInfomation.DoesNotExist:
+        return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+    
     serializer = PassengerInformationSerializer(user, many=False)
     return Response(serializer.data, status=status.HTTP_302_FOUND)
 
@@ -51,7 +56,11 @@ def driver_signup(request):
 @api_view(["POST"])
 def driver_login(request):
     key = request.data["email_address"]
-    user = DriverInformation.objects.get(email_address=key)
+    try:
+        user = DriverInformation.objects.get(email_address=key)
+    except DriverInformation.DoesNotExist:
+        return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+    
     request.session["key"] = key
     serializer = DriverInformationSerializer(user, many=False)
     return Response(serializer.data, status=status.HTTP_302_FOUND)
@@ -75,29 +84,4 @@ def create_ride(request):
         ride_info = {**requred_driver_info, **serializer.data}
         return Response(ride_info, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # user = DriverInformation.objects.get(email_address=driver_email)
-    # serializer = DriverInformationSerializer(user, many=False)
-    # ride_infor = {}
-    # for key, value in serializer.data.items():
-    #     if key == "id" or key == "gender" or key == "phone" or key == "email_address" or key == "licence_id":
-    #         continue
-    #     ride_infor[key] = value
 
-    # print(driver_email)
-    # ride_request_data = {}
-    # ride_request_data = request.data
-    # ride_request_data["driver_email"] = driver_email
-    # for key, value in request.data.items():
-    #     ride_request_data[key] = value
-
-    # print(ride_request_data)
-        
-
-    # print(ride_request_data)
-
-    # ride_serializer = DriverInformationSerializer(ride_request_data)
-    # if ride_serializer.is_valid():
-    #     ride_serializer.save()
-    #     return Response("Ride Created!", status=status.HTTP_201_CREATED)
-    # else:
-    #     return Response("Error creating ride", status=status.HTTP_400_BAD_REQUEST)
