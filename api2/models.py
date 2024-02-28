@@ -1,6 +1,4 @@
 from django.db import models
-from datetime import time
-
 
 class PassengerInfomation(models.Model):
     name = models.CharField(max_length=50)

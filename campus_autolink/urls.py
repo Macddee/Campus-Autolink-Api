@@ -20,5 +20,5 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path("", include("cal_api.urls")),
-    path("", include("api2.urls")),
+    path("campus-autolink-api/", include("api2.urls")),
 ]

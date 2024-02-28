@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path("", views.api_endpoints, name="api-endpoints"),
     path('passenger-signup', views.passenger_signup, name='passenger-signup'),
     path('passenger-login', views.passenger_login, name='passenger-login'),
     path("driver-signup", views.driver_signup, name="driver-signup"),

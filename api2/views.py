@@ -9,6 +9,17 @@ from .serializers import PassengerInformationSerializer, DriverInformationSerial
 
 driver_email = ""
 
+@api_view(["GET"])
+def api_endpoints(request):
+    context = [
+        "localahost://8000/passenger-signup",
+        "localahost://8000/passenger-login",
+        "localahost://8000/driver-signup",
+        "localahost://8000/driver-login",
+        "localahost://8000/create-ride",
+    ]
+    return Response(context, status=status.HTTP_200_OK)
+
 @api_view(["POST"])
 def passenger_signup(request):
     serializer = PassengerInformationSerializer(data=request.data)
