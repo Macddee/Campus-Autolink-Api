@@ -16,7 +16,7 @@ def api_endpoints(request):
         "localahost://8000/passenger-login",
         "localahost://8000/driver-signup",
         "localahost://8000/driver-login",
-        "localahost://8000/create-ride",
+        "create-ride",
     ]
     return Response(context, status=status.HTTP_200_OK)
 
